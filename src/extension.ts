@@ -141,6 +141,7 @@ class ExtensionController {
       "local CONFIG = {",
       `    baseUrl = \"http://127.0.0.1:${running.port}\",`,
       `    token = \"${running.token}\",`,
+      "    silentMode = true,",
       "    pollTimeoutMs = 25_000,",
       "    retryDelaySeconds = 1,",
       "}",
