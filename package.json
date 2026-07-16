@@ -1,0 +1,124 @@
+{
+  "name": "scriptferry",
+  "displayName": "ScriptFerry",
+  "description": "Send the exact active Lua or Luau editor snapshot to one authorized local listener.",
+  "version": "0.1.0",
+  "publisher": "scriptferry",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.125.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "lua",
+    "luau",
+    "localhost"
+  ],
+  "main": "./out/src/extension.js",
+  "activationEvents": [
+    "onCommand:scriptferry.sendCurrentFile",
+    "onCommand:scriptferry.startServer",
+    "onCommand:scriptferry.stopServer",
+    "onCommand:scriptferry.copyConnectionSnippet"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "lua",
+        "aliases": [
+          "Lua"
+        ],
+        "extensions": [
+          ".lua"
+        ]
+      },
+      {
+        "id": "luau",
+        "aliases": [
+          "Luau"
+        ],
+        "extensions": [
+          ".luau"
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "scriptferry.sendCurrentFile",
+        "title": "Send Current File",
+        "category": "ScriptFerry"
+      },
+      {
+        "command": "scriptferry.startServer",
+        "title": "Start Server",
+        "category": "ScriptFerry"
+      },
+      {
+        "command": "scriptferry.stopServer",
+        "title": "Stop Server",
+        "category": "ScriptFerry"
+      },
+      {
+        "command": "scriptferry.copyConnectionSnippet",
+        "title": "Copy Connection Snippet",
+        "category": "ScriptFerry"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "scriptferry.sendCurrentFile",
+        "key": "ctrl+alt+f2",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "ScriptFerry",
+      "properties": {
+        "scriptFerry.port": {
+          "type": "integer",
+          "default": 6767,
+          "minimum": 1024,
+          "maximum": 65535,
+          "description": "Loopback TCP port used by the local ScriptFerry server. Changes take effect after the server is stopped and started."
+        },
+        "scriptFerry.autoStart": {
+          "type": "boolean",
+          "default": false,
+          "description": "Start the loopback server when the extension activates."
+        },
+        "scriptFerry.allowedLanguageIds": {
+          "type": "array",
+          "default": [
+            "lua",
+            "luau"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "VS Code language identifiers that may be sent."
+        },
+        "scriptFerry.executionTimeoutMs": {
+          "type": "integer",
+          "default": 30000,
+          "minimum": 1000,
+          "description": "How long to wait for a listener result before expiring an event."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "test": "npm run compile && node --test out/test/broker.test.js out/test/server.test.js",
+    "package": "vsce package --no-dependencies --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.125.0",
+    "@vscode/vsce": "^3.9.2",
+    "typescript": "^7.0.2"
+  }
+}
